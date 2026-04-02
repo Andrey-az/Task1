@@ -1,33 +1,28 @@
 name: Build EXE
 
-on:
-  push:
-    branches: [ "master" ]
+on: [push]
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
-        pip install pyinstaller
+        pip install pandas openpyxl rapidfuzz pyinstaller
 
     - name: Build EXE
       run: |
-        pyinstaller --onefile --windowed -n MaterialApp app.py
+        pyinstaller --onefile --windowed app.py
 
     - name: Upload EXE
       uses: actions/upload-artifact@v4
       with:
-        name: MaterialApp
-        path: dist/MaterialApp.exe
+        name: app
+        path: dist/
